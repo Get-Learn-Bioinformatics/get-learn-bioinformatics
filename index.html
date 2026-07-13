@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Learn Bioinformatics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red:#d60700;--red-dark:#a80500;--red-glow:rgba(214,7,0,0.13);
+      --teal:#128f8b;--teal-dark:#0d6e6a;--teal-light:#1abfb9;--teal-glow:rgba(18,143,139,0.13);
+      --bg:#060e0e;--bg2:#0c1a1a;--bg3:#112020;
+      --surface:#0f2222;--surface2:#163030;
+      --border:rgba(18,143,139,0.18);
+      --text:#e8f4f4;--text-muted:#7aadad;--text-dim:#3d7070;--white:#fff;
+      --font-d:'Playfair Display',Georgia,serif;
+      --font-b:'Space Grotesk',sans-serif;
+      --font-m:'JetBrains Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-b);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;height:64px;background:rgba(6,14,14,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+    .nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--red),var(--teal));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:12px;font-weight:500;color:#fff;flex-shrink:0}
+    .nav-logo-text{font-size:13px;font-weight:600;color:var(--white);line-height:1.2}
+    .nav-logo-text span{color:var(--teal-light);display:block;font-weight:400;font-size:11px}
+    .nav-links{display:flex;gap:2px;list-style:none;flex-wrap:wrap}
+    .nav-links a{color:var(--text-muted);text-decoration:none;font-size:12.5px;font-weight:500;padding:6px 10px;border-radius:6px;transition:all .2s;cursor:pointer}
+    .nav-links a:hover{color:var(--teal-light);background:var(--teal-glow)}
+    .nav-cta{background:var(--teal)!important;color:#fff!important;border-radius:6px}
+    .nav-cta:hover{background:var(--teal-dark)!important}
+    .hamburger{display:none;cursor:pointer;flex-direction:column;gap:5px}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text-muted);border-radius:2px}
+
+    /* PAGES */
+    .page{display:none;padding-top:64px;min-height:100vh}
+    .page.active{display:block}
+
+    /* LAYOUT */
+    .section{padding:72px 5vw}
+    .container{max-width:1080px;margin:0 auto}
+    .eyebrow{font-family:var(--font-m);font-size:11px;font-weight:500;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+    h1,h2,h3{font-family:var(--font-d);line-height:1.15}
+    h1{font-size:clamp(2.2rem,4.5vw,3.6rem);color:var(--white)}
+    h2{font-size:clamp(1.7rem,2.8vw,2.4rem);color:var(--white)}
+    h3{font-size:1.15rem;color:var(--white)}
+    .teal{color:var(--teal-light)}.red{color:var(--red)}
+    p{color:var(--text-muted);font-size:15px;line-height:1.75}
+    a{color:var(--teal-light);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:8px;font-family:var(--font-b);font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:all .2s}
+    .btn-teal{background:var(--teal);color:#fff}.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px);text-decoration:none}
+    .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-dark);transform:translateY(-1px);text-decoration:none}
+    .btn-outline{background:transparent;color:var(--teal-light);border:1px solid var(--teal)}.btn-outline:hover{background:var(--teal-glow);text-decoration:none}
+
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px;transition:border-color .2s,transform .2s}
+    .card:hover{border-color:var(--teal);transform:translateY(-3px)}
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+    .grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+    .divider{border:none;border-top:1px solid var(--border);margin:44px 0}
+
+    /* PAGE HEADER */
+    .page-header{padding:60px 5vw 44px;background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);border-bottom:1px solid var(--border)}
+    .page-header .container{max-width:1080px;margin:0 auto}
+
+    /* TAG */
+    .tag{font-size:11px;padding:3px 10px;border-radius:100px;background:var(--bg3);color:var(--text-muted);border:1px solid var(--border);display:inline-block}
+
+    /* ═══ HOME ═══ */
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    .seq-ticker{background:var(--bg);border-bottom:1px solid var(--border);padding:10px 0;overflow:hidden}
+    .seq-track{display:flex;gap:7px;white-space:nowrap;animation:ticker 28s linear infinite}
+    .seq-char{font-family:var(--font-m);font-size:12px;font-weight:500;width:20px;text-align:center;opacity:.4}
+    .seq-char.A{color:#ff6b6b}.seq-char.T{color:#ffd93d}.seq-char.G{color:#6bcb77}.seq-char.C{color:#4d96ff}
+
+    .hero{min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:52px;padding:72px 5vw;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-150px;right:-150px;width:500px;height:500px;background:radial-gradient(circle,var(--teal-glow) 0%,transparent 70%);pointer-events:none}
+    .hero::after{content:'';position:absolute;bottom:-80px;left:30%;width:350px;height:350px;background:radial-gradient(circle,var(--red-glow) 0%,transparent 70%);pointer-events:none}
+
+    .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px 14px;font-family:var(--font-m);font-size:11px;color:var(--teal-light);margin-bottom:22px}
+    .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal-light);animation:pulse 2s infinite;flex-shrink:0}
+    .hero-h1{margin-bottom:18px}
+    .hero-h1 em{font-style:italic;color:var(--teal-light)}
+    .hero-sub{font-size:15.5px;max-width:460px;margin-bottom:32px}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:44px}
+    .hero-stats{display:flex;gap:28px;padding-top:28px;border-top:1px solid var(--border)}
+    .stat-val{font-family:var(--font-m);font-size:1.7rem;font-weight:700;color:var(--white);display:block}
+    .stat-val span{color:var(--red)}
+    .stat-label{font-size:12px;color:var(--text-dim)}
+
+    .hero-visual{display:flex;justify-content:center;align-items:center;position:relative;z-index:1}
+    .dna-wrap{width:260px;height:400px;position:relative;animation:float 6s ease-in-out infinite}
+    .dna-wrap svg{width:100%;height:100%}
+    .glb-badge{position:absolute;bottom:-16px;right:-16px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-family:var(--font-m);font-size:11px}
+    .glb-badge .metric{font-size:20px;font-weight:700;color:var(--teal-light)}
+
+    .highlights{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 5vw}
+    .highlights-inner{max-width:1080px;margin:0 auto;display:flex;align-items:stretch}
+    .hl-item{flex:1;padding:24px 20px;display:flex;align-items:center;gap:14px;border-right:1px solid var(--border)}
+    .hl-item:last-child{border-right:none}
+    .hl-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .hl-icon.r{background:var(--red-glow)}.hl-icon.t{background:var(--teal-glow)}
+    .hl-text strong{display:block;color:var(--white);font-size:13.5px;margin-bottom:2px}
+    .hl-text span{font-size:11.5px;color:var(--text-dim)}
+
+    /* Social links */
+    .social-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+    .social-link{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--text-muted);text-decoration:none;transition:all .2s}
+    .social-link:hover{border-color:var(--teal);color:var(--teal-light);text-decoration:none}
+
+    /* ═══ ABOUT ═══ */
+    .about-hero{padding:72px 5vw 56px;background:linear-gradient(135deg,var(--bg) 60%,var(--bg2));border-bottom:1px solid var(--border)}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:1080px;margin:0 auto}
+    .code-block{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;font-family:var(--font-m);font-size:12px;color:var(--text-muted);line-height:2}
+    .code-block .c{color:var(--text-dim)}.code-block .k{color:var(--teal-light)}.code-block .v{color:var(--red)}.code-block .s{color:#a8d8a8}
+    .mission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+    .mission-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:26px}
+    .mission-card .num{font-family:var(--font-m);font-size:10px;color:var(--red);letter-spacing:2px;margin-bottom:10px}
+    .mission-card h3{font-size:1.05rem;margin-bottom:8px}
+    .mission-card p{font-size:13.5px}
+
+    /* ═══ PUBLICATIONS ═══ */
+    .pub-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:14px;transition:border-color .2s}
+    .pub-card:hover{border-color:var(--teal)}
+    .pub-num{font-family:var(--font-m);font-size:11px;color:var(--red);margin-bottom:8px}
+    .pub-title{color:var(--white);font-size:14px;font-weight:600;line-height:1.5;margin-bottom:6px}
+    .pub-authors{font-size:12.5px;color:var(--text-muted);margin-bottom:8px;line-height:1.6}
+    .pub-journal{font-family:var(--font-m);font-size:11px;color:var(--teal-light)}
+    .pub-doi{font-size:11.5px;color:var(--text-dim);margin-top:6px}
+    .pub-doi a{color:var(--teal-light)}
+
+    .conf-card{background:var(--surface);border:1px solid rgba(214,7,0,0.2);border-radius:12px;padding:22px;margin-bottom:12px;transition:border-color .2s}
+    .conf-card:hover{border-color:var(--red)}
+
+    /* ═══ PROJECTS ═══ */
+    .project-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;transition:border-color .2s,transform .2s}
+    .project-card:hover{border-color:var(--teal);transform:translateY(-3px)}
+    .project-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+    .pi-t{background:var(--teal-glow);border:1px solid rgba(18,143,139,0.2)}
+    .pi-r{background:var(--red-glow);border:1px solid rgba(214,7,0,0.2)}
+
+    /* ═══ COURSES ═══ */
+    .course-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s,transform .2s}
+    .course-card:hover{border-color:var(--teal);transform:translateY(-3px)}
+    .course-top{padding:24px;border-bottom:1px solid var(--border);position:relative}
+    .course-level{font-family:var(--font-m);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:100px;position:absolute;top:18px;right:18px}
+    .lv-b{background:rgba(107,203,119,.15);color:#6bcb77}
+    .lv-i{background:var(--teal-glow);color:var(--teal-light)}
+    .lv-a{background:var(--red-glow);color:var(--red)}
+    .course-code{font-family:var(--font-m);font-size:11px;color:var(--text-dim);margin-bottom:7px}
+    .course-title{color:var(--white);font-family:var(--font-b);font-weight:600;font-size:15.5px;margin-bottom:8px}
+    .course-desc{font-size:13px;color:var(--text-muted);line-height:1.7}
+    .course-bottom{padding:14px 24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .course-meta{font-family:var(--font-m);font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:5px}
+    .start-date{font-family:var(--font-m);font-size:11px;color:var(--teal-light)}
+
+    /* Sessions */
+    .session-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;transition:border-color .2s}
+    .session-card:hover{border-color:var(--teal)}
+    .session-type{font-family:var(--font-m);font-size:10px;color:var(--teal-light);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+
+    /* ═══ PIPELINE ═══ */
+    .pipeline-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 26px;display:flex;align-items:center;gap:18px;margin-bottom:10px;transition:border-color .2s}
+    .pipeline-item:hover{border-color:var(--teal)}
+    .pipe-num{font-family:var(--font-m);font-size:11px;color:var(--text-dim);min-width:36px}
+    .pipe-name{color:var(--white);font-weight:500;font-size:14px;flex:1}
+    .pipe-status{font-family:var(--font-m);font-size:10px;padding:3px 10px;border-radius:100px}
+    .ps-upcoming{background:var(--teal-glow);color:var(--teal-light)}
+    .ps-soon{background:var(--red-glow);color:var(--red)}
+
+    /* ═══ PEOPLE / FOUNDER ═══ */
+    .founder-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;margin-bottom:40px}
+    .founder-avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--bg3),var(--surface2));display:flex;align-items:center;justify-content:center;font-size:42px;border:2px solid var(--border);flex-shrink:0}
+    .founder-name{font-family:var(--font-d);font-size:1.6rem;color:var(--white);margin-bottom:4px}
+    .founder-role{font-family:var(--font-m);font-size:11px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+    .founder-social{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+    .founder-social a{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:6px 11px;font-size:12px;color:var(--text-muted);text-decoration:none;transition:all .2s}
+    .founder-social a:hover{border-color:var(--teal);color:var(--teal-light);text-decoration:none}
+
+    .alphafold-card{background:linear-gradient(135deg,var(--surface) 0%,var(--bg3) 100%);border:1px solid rgba(18,143,139,0.3);border-radius:14px;padding:32px}
+    .alphafold-link{display:flex;align-items:flex-start;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;text-decoration:none;transition:border-color .2s}
+    .alphafold-link:hover{border-color:var(--teal);text-decoration:none}
+    .alphafold-link-icon{width:36px;height:36px;border-radius:8px;background:var(--teal-glow);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .alphafold-link-title{color:var(--white);font-size:13.5px;font-weight:600;margin-bottom:3px}
+    .alphafold-link-sub{font-size:12px;color:var(--text-dim)}
+
+    /* ═══ CONTACT ═══ */
+    .contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:44px;align-items:start}
+    .contact-info-item{display:flex;gap:14px;margin-bottom:24px;align-items:flex-start}
+    .contact-info-icon{width:42px;height:42px;border-radius:10px;background:var(--teal-glow);border:1px solid rgba(18,143,139,0.2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+    .contact-info-label{font-size:11.5px;color:var(--text-dim);margin-bottom:2px}
+    .contact-info-val{color:var(--white);font-size:14px;font-weight:500}
+    .contact-form{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px}
+    .form-group{margin-bottom:18px}
+    .form-label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:7px;font-weight:500}
+    .form-input,.form-textarea,.form-select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--white);font-family:var(--font-b);font-size:13.5px;outline:none;transition:border-color .2s;appearance:none}
+    .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--teal)}
+    .form-textarea{resize:vertical;min-height:110px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+    /* ═══ FOOTER ═══ */
+    footer{background:var(--bg2);border-top:1px solid var(--border);padding:52px 5vw 28px}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;max-width:1080px;margin:0 auto 40px}
+    .footer-brand p{font-size:13px;margin-top:10px;max-width:240px}
+    .footer-col h4{font-family:var(--font-b);color:var(--white);font-size:13px;font-weight:600;margin-bottom:14px}
+    .footer-links{list-style:none}
+    .footer-links li{margin-bottom:7px}
+    .footer-links a{color:var(--text-dim);font-size:13px;text-decoration:none;transition:color .2s;cursor:pointer}
+    .footer-links a:hover{color:var(--teal-light)}
+    .footer-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;align-items:center;max-width:1080px;margin:0 auto;flex-wrap:wrap;gap:12px}
+    .footer-bottom p{font-size:12px;color:var(--text-dim)}
+    .footer-socials{display:flex;gap:8px}
+    .soc-btn{width:32px;height:32px;border-radius:7px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;text-decoration:none;color:var(--text-muted);transition:border-color .2s}
+    .soc-btn:hover{border-color:var(--teal);color:var(--teal-light);text-decoration:none}
+
+    /* ════════════════════════════════
+       SERVICES PAGE
+    ════════════════════════════════ */
+    .service-hero-card {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--bg3) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 48px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: center; margin-bottom: 48px;
+      position: relative; overflow: hidden;
+    }
+    .service-hero-card::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
+    }
+    .sim-demo {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+      font-family: var(--font-m); font-size: 12px;
+      position: relative; z-index: 1;
+    }
+    .sim-demo-bar {
+      background: var(--surface2); border-radius: 6px;
+      height: 6px; margin: 12px 0;
+      overflow: hidden;
+    }
+    .sim-demo-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      border-radius: 6px;
+      animation: fillBar 3s ease-in-out infinite;
+    }
+    @keyframes fillBar {
+      0%{width:0} 60%{width:85%} 80%{width:85%} 100%{width:0}
+    }
+    .sim-demo-output { margin-top: 16px; color: var(--teal-light); line-height: 1.8; }
+    .sim-demo-output span { color: var(--text-dim); }
+    .service-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .service-card:hover { border-color: var(--teal); transform: translateY(-3px); }
+    .service-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+    }
+    .si-r { background: var(--red-glow); border: 1px solid rgba(214,7,0,0.2); }
+    .si-t { background: var(--teal-glow); border: 1px solid rgba(18,143,139,0.2); }
+    .service-card h3 { margin-bottom: 10px; }
+    .service-features { margin: 16px 0; list-style: none; }
+    .service-features li {
+      font-size: 13px; color: var(--text-muted); padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .service-features li::before { content: '›'; color: var(--teal-light); font-size: 16px; }
+    .service-price-tag{
+      display:inline-block; margin-top:14px; font-family:var(--font-m);
+      font-size:12.5px; color:var(--teal-light); background:var(--teal-glow);
+      border:1px solid rgba(18,143,139,0.25); border-radius:100px; padding:5px 14px;
+    }
+    .service-badge{
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:var(--font-m); font-size:10.5px; letter-spacing:1px; text-transform:uppercase;
+      color:var(--teal-light); background:var(--bg2); border:1px solid var(--border);
+      border-radius:100px; padding:4px 12px; margin-bottom:16px;
+    }
+    .service-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal-light);animation:pulse 2s infinite;flex-shrink:0}
+    .service-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:20px}
+    .service-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .service-step .step-num{font-family:var(--font-m);font-size:11px;color:var(--red);letter-spacing:2px;margin-bottom:8px}
+    .service-step h3{font-size:14.5px;margin-bottom:6px}
+    .service-step p{font-size:12.5px}
+    @media(max-width:900px){
+      .service-hero-card{grid-template-columns:1fr}
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr;text-align:center}
+      .hero-sub{margin:0 auto 32px}
+      .hero-btns{justify-content:center}
+      .hero-stats{justify-content:center}
+      .hero-visual{display:none}
+      .about-grid,.contact-grid,.founder-card{grid-template-columns:1fr}
+      .highlights-inner{flex-direction:column}
+      .hl-item{border-right:none;border-bottom:1px solid var(--border)}
+      .hl-item:last-child{border-bottom:none}
+      .mission-grid{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr 1fr}
+      .nav-links{display:none}
+      .hamburger{display:flex}
+    }
+    @media(max-width:600px){
+      .form-row{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr}
+      .hero-stats{flex-direction:column;gap:14px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-icon">GL<span style="color:var(--red)">B</span></div>
+    <div class="nav-logo-text">
+      Get Learn Bioinformatics
+      <span>Bioinformatics for Next Generation</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('services')">Services</a></li>
+    <li><a onclick="showPage('about')">About</a></li>
+    <li><a onclick="showPage('founders')">Founders</a></li>
+    <li><a onclick="showPage('courses')">Courses</a></li>
+    <li><a onclick="showPage('sessions')">Sessions</a></li>
+    <li><a onclick="showPage('projects')">Projects</a></li>
+    <li><a onclick="showPage('publications')">Publications</a></li>
+    <li><a onclick="showPage('pipeline')">Pipeline</a></li>
+    <li><a onclick="showPage('contact')" class="nav-cta">Contact</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="page-home">
+  <div class="seq-ticker"><div class="seq-track" id="seqTrack"></div></div>
+
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">Bioinformatics for Next Generation</div>
+      <h1 class="hero-h1">Learn. Explore.<br/><em>Research.</em> Grow.</h1>
+      <p class="hero-sub">Get Learn Bioinformatics (GLB) is an educational and research-focused platform dedicated to making bioinformatics, computational biology, and research learning more accessible, practical, and understandable for students, beginners, and aspiring researchers.</p>
+      <div class="hero-btns">
+        <a class="btn btn-teal" onclick="showPage('courses')">Explore Courses →</a>
+        <a class="btn btn-outline" onclick="showPage('projects')">Our Research</a>
+      </div>
+      <div class="hero-stats">
+        <div><span class="stat-val">3<span>+</span></span><span class="stat-label">Publications</span></div>
+        <div><span class="stat-val">2<span>+</span></span><span class="stat-label">Course Tracks</span></div>
+        <div><span class="stat-val">7<span>+</span></span><span class="stat-label">Research Areas</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="dna-wrap">
+        <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+          <defs><radialGradient id="g1" cx="50%" cy="50%"><stop offset="0%" stop-color="#128f8b" stop-opacity="0.8"/><stop offset="100%" stop-color="#128f8b" stop-opacity="0"/></radialGradient></defs>
+          <path d="M60 20C60 60,140 80,140 120C140 160,60 180,60 220C60 260,140 280,140 320C140 360,60 380,60 390" fill="none" stroke="#128f8b" stroke-width="3" stroke-linecap="round"/>
+          <path d="M140 20C140 60,60 80,60 120C60 160,140 180,140 220C140 260,60 280,60 320C60 360,140 380,140 390" fill="none" stroke="#d60700" stroke-width="3" stroke-linecap="round"/>
+          <line x1="60" y1="20" x2="140" y2="20" stroke="#1abfb9" stroke-width="2" opacity="0.6"/>
+          <line x1="73" y1="45" x2="127" y2="45" stroke="#1abfb9" stroke-width="2" opacity="0.5"/>
+          <line x1="110" y1="95" x2="90" y2="95" stroke="#1abfb9" stroke-width="2" opacity="0.5"/>
+          <line x1="128" y1="120" x2="72" y2="120" stroke="#1abfb9" stroke-width="2" opacity="0.6"/>
+          <line x1="140" y1="145" x2="60" y2="145" stroke="#1abfb9" stroke-width="2" opacity="0.5"/>
+          <line x1="110" y1="195" x2="90" y2="195" stroke="#1abfb9" stroke-width="2" opacity="0.5"/>
+          <line x1="60" y1="220" x2="140" y2="220" stroke="#1abfb9" stroke-width="2" opacity="0.6"/>
+          <line x1="73" y1="245" x2="127" y2="245" stroke="#1abfb9" stroke-width="2" opacity="0.5"/>
+          <line x1="60" y1="270" x2="140" y2="270" stroke="#1abfb9" stroke-width="2" opacity="0.4"/>
+          <line x1="110" y1="345" x2="90" y2="345" stroke="#1abfb9" stroke-width="2" opacity="0.5"/>
+          <line x1="128" y1="370" x2="72" y2="370" stroke="#1abfb9" stroke-width="2" opacity="0.4"/>
+          <circle cx="60" cy="120" r="6" fill="#128f8b" opacity="0.8"/>
+          <circle cx="140" cy="270" r="6" fill="#d60700" opacity="0.8"/>
+        </svg>
+        <div class="glb-badge"><div class="metric">GLB</div><div style="font-size:10px;color:var(--text-dim);margin-top:2px">Est. 2023</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlights">
+    <div class="highlights-inner">
+      <div class="hl-item"><div class="hl-icon t">🧬</div><div class="hl-text"><strong>Hands-on Training</strong><span>Bioinformatics tools & visualization</span></div></div>
+      <div class="hl-item"><div class="hl-icon r">📖</div><div class="hl-text"><strong>Research Guidance</strong><span>Methodology & literature analysis</span></div></div>
+      <div class="hl-item"><div class="hl-icon t">🏆</div><div class="hl-text"><strong>Published Research</strong><span>3 peer-reviewed papers & 2 conference posters</span></div></div>
+      <div class="hl-item"><div class="hl-icon r">🌐</div><div class="hl-text"><strong>Open Community</strong><span>Facebook Group · YouTube · Instagram</span></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">What We Do</div>
+      <h2 style="margin-bottom:8px">Empowering the Next Generation<br/>of <span class="teal">Computational Biologists</span></h2>
+      <p style="margin-bottom:36px;max-width:520px">We provide hands-on training, research mentorship, and academic support so you can confidently explore, analyze, and contribute to science.</p>
+      <div class="grid-3">
+        <div class="card"><div style="font-size:30px;margin-bottom:14px">🔬</div><h3 style="margin-bottom:8px">Bioinformatics Tools</h3><p style="font-size:13.5px">Sequence retrieval, physicochemical analysis, subcellular localization, protein function prediction, and molecular visualization.</p></div>
+        <div class="card"><div style="font-size:30px;margin-bottom:14px">📚</div><h3 style="margin-bottom:8px">Scientific Literature</h3><p style="font-size:13.5px">Learn how to search, read, and summarize scientific articles efficiently to support your research goals.</p></div>
+        <div class="card"><div style="font-size:30px;margin-bottom:14px">🤖</div><h3 style="margin-bottom:8px">CADD Research</h3><p style="font-size:13.5px">Computer Aided Drug Design pipelines — from target identification to lead compound screening and optimization.</p></div>
+      </div>
+      <div style="text-align:center;margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-teal" onclick="showPage('courses')">View Courses →</a>
+        <a class="btn btn-outline" onclick="showPage('publications')">Our Publications</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:8px">
+          <div class="nav-logo-icon" style="width:32px;height:32px;font-size:11px">GL<span style="color:var(--red)">B</span></div>
+          <span style="color:var(--white);font-weight:600;font-size:13px">Get Learn Bioinformatics</span>
+        </div>
+        <p>Bioinformatics for Next Generation — making computational biology accessible for all.</p>
+      </div>
+      <div class="footer-col"><h4>Learn</h4><ul class="footer-links"><li><a onclick="showPage('courses')">Courses</a></li><li><a onclick="showPage('sessions')">Sessions & Talks</a></li><li><a onclick="showPage('pipeline')">Pipeline</a></li></ul></div>
+      <div class="footer-col"><h4>Research</h4><ul class="footer-links"><li><a onclick="showPage('services')">Services</a></li><li><a onclick="showPage('projects')">Projects</a></li><li><a onclick="showPage('publications')">Publications</a></li></ul></div>
+      <div class="footer-col"><h4>Connect</h4><ul class="footer-links"><li><a onclick="showPage('about')">About GLB</a></li><li><a onclick="showPage('founders')">Founders</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Get Learn Bioinformatics. All rights reserved.</p>
+      <div class="footer-socials">
+        <a class="soc-btn" href="mailto:info.getlearnbioinformatics@gmail.com" title="Email">✉</a>
+        <a class="soc-btn" href="https://www.facebook.com/getlearnbioinformatics" target="_blank" title="Facebook">f</a>
+        <a class="soc-btn" href="https://facebook.com/groups/934011292608963/" target="_blank" title="FB Group">👥</a>
+        <a class="soc-btn" href="https://youtube.com/@getlearn_bioinformatics" target="_blank" title="YouTube">▶</a>
+        <a class="soc-btn" href="https://www.instagram.com/bio.info_shikhbo" target="_blank" title="Instagram">📷</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<div class="page" id="page-services">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Research Services</div>
+      <h1>Our <span class="teal">Services</span></h1>
+      <p style="max-width:520px;margin-top:10px">Beyond training and mentorship, GLB offers hands-on computational research services for students, labs, and collaborators — built around our core specialty, Molecular Dynamics Simulation.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+
+      <!-- Hero service: Molecular Dynamics Simulation -->
+      <div class="service-hero-card">
+        <div>
+          <div class="service-badge">Flagship Service</div>
+          <h2 style="margin-bottom:14px">Molecular Dynamics <span class="teal">Simulation</span></h2>
+          <p style="margin-bottom:18px">We run GROMACS-based molecular dynamics simulations to study protein stability, conformational behavior, and protein–ligand interactions over time — the same pipeline used in our own published research. Configure the number of complexes, simulation length, and add-on analyses to match your project's needs.</p>
+          <ul class="service-features">
+            <li>Custom simulation time from 50 ns up to 1000 ns</li>
+            <li>Single or batch runs — up to 20 complexes per order</li>
+            <li>Optional PCA & DCCM post-simulation analysis</li>
+            <li>Optional molecular docking & ADMET add-ons</li>
+            <li>Full trajectory files, plots, and a written report delivered</li>
+          </ul>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
+            <a class="btn btn-teal" onclick="showPage('contact')">Request This Service →</a>
+            <a class="btn btn-outline" onclick="showPage('pipeline')">See Our Pipeline</a>
+          </div>
+        </div>
+
+        <div class="sim-demo">
+          <div><span style="color:var(--text-dim)">$</span> glb-md run --protein 6M0J.pdb --time 100ns</div>
+          <div class="sim-demo-bar"><div class="sim-demo-fill"></div></div>
+          <div class="sim-demo-output">
+            <span>#</span> initializing system... OK<br/>
+            <span>#</span> energy minimization... OK<br/>
+            <span>#</span> NPT/NVT equilibration... OK<br/>
+            <span>#</span> production run... <span style="color:#6bcb77">in progress</span><br/>
+            <span>#</span> RMSD / RMSF / Rg... queued<br/>
+            <span>#</span> PCA + DCCM... queued
+          </div>
+        </div>
+      </div>
+
+      <div class="eyebrow">Add-on Analyses</div>
+      <h2 style="margin-bottom:28px">Extend Your <span class="teal">Simulation Order</span></h2>
+      <div class="grid-3">
+        <div class="service-card">
+          <div class="service-icon si-t">📊</div>
+          <h3>PCA Analysis</h3>
+          <p style="font-size:13.5px">Principal component analysis of trajectory data to identify dominant conformational motions of your complex over the simulation.</p>
+          <span class="service-price-tag">Add-on · per complex</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon si-r">🔗</div>
+          <h3>DCCM Analysis</h3>
+          <p style="font-size:13.5px">Dynamic cross-correlation matrix mapping to reveal correlated and anti-correlated residue motions across the trajectory.</p>
+          <span class="service-price-tag">Add-on · per complex</span>
+        </div>
+        <div class="service-card">
+          <div class="service-icon si-t">🧪</div>
+          <h3>Molecular Docking</h3>
+          <p style="font-size:13.5px">Structure-based docking of candidate ligands against your target protein, with binding pose and affinity ranking.</p>
+          <span class="service-price-tag">Add-on · per compound</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="eyebrow">How It Works</div>
+      <h2 style="margin-bottom:8px">From <span class="teal">Order</span> to Results</h2>
+      <p style="max-width:560px">A straightforward workflow so you always know where your analysis stands.</p>
+      <div class="service-steps">
+        <div class="service-step"><div class="step-num">STEP 01</div><h3>Configure</h3><p>Tell us your protein/complex, simulation time, and any add-on analyses you need.</p></div>
+        <div class="service-step"><div class="step-num">STEP 02</div><h3>Confirm</h3><p>We review feasibility and confirm scope, timeline, and cost before starting.</p></div>
+        <div class="service-step"><div class="step-num">STEP 03</div><h3>Simulate</h3><p>Our team runs the simulation and post-processing analyses on our compute pipeline.</p></div>
+        <div class="service-step"><div class="step-num">STEP 04</div><h3>Deliver</h3><p>You receive trajectory files, plots, and a written summary report of the results.</p></div>
+      </div>
+
+      <div style="text-align:center;margin-top:44px">
+        <a class="btn btn-teal" onclick="showPage('contact')">Start a Service Request →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="about-grid">
+      <div>
+        <div class="eyebrow">About GLB</div>
+        <h1 style="margin-bottom:18px">Making Bioinformatics <span class="teal">Accessible</span></h1>
+        <p style="margin-bottom:16px">Get Learn Bioinformatics (GLB) is an educational and research-focused platform dedicated to making bioinformatics, computational biology, and research learning more accessible, practical, and understandable for students, beginners, and aspiring researchers.</p>
+        <p style="margin-bottom:16px">We are committed to creating a learning environment where students can explore, practice, and grow in the field of bioinformatics with proper guidance and real-world application.</p>
+        <div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn btn-teal" onclick="showPage('courses')">Our Courses</a>
+          <a class="btn btn-outline" onclick="showPage('contact')">Get In Touch</a>
+        </div>
+        <div class="social-links">
+          <a class="social-link" href="mailto:info.getlearnbioinformatics@gmail.com">✉ Email Us</a>
+          <a class="social-link" href="https://www.facebook.com/getlearnbioinformatics" target="_blank">📘 Facebook</a>
+          <a class="social-link" href="https://facebook.com/groups/934011292608963/" target="_blank">👥 FB Group</a>
+          <a class="social-link" href="https://youtube.com/@getlearn_bioinformatics" target="_blank">▶ YouTube</a>
+          <a class="social-link" href="https://www.instagram.com/bio.info_shikhbo" target="_blank">📷 Instagram</a>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="c"># GLB Platform — core manifest</div><br/>
+        <span class="k">organization</span>: <span class="s">"Get Learn Bioinformatics"</span><br/>
+        <span class="k">tagline</span>: <span class="s">"Bioinformatics for Next Generation"</span><br/>
+        <span class="k">email</span>: <span class="s">"info.getlearnbioinformatics@gmail.com"</span><br/>
+        <span class="k">type</span>: <span class="s">"Education + Research"</span><br/><br/>
+        <span class="k">mission</span>:<br/>
+        &nbsp;&nbsp;<span class="c">- Practical skills for aspiring researchers</span><br/>
+        &nbsp;&nbsp;<span class="c">- Bridge biology × computation</span><br/>
+        &nbsp;&nbsp;<span class="c">- Accessible training for all levels</span><br/><br/>
+        <span class="k">vision</span>:<br/>
+        &nbsp;&nbsp;<span class="c">- Community of growth & innovation</span><br/>
+        &nbsp;&nbsp;<span class="c">- Open platform for next-gen scientists</span><br/><br/>
+        <span class="k">publications</span>: <span class="v">3</span><span class="c"> # peer-reviewed</span><br/>
+        <span class="k">conference_posters</span>: <span class="v">2</span><br/>
+        <span class="k">research_areas</span>: <span class="v">7</span><br/>
+        <span class="k">status</span>: <span style="color:#6bcb77">ACTIVE ✓</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">Our Pillars</div>
+      <h2 style="margin-bottom:36px">Built on Three <span class="teal">Core Commitments</span></h2>
+      <div class="mission-grid">
+        <div class="mission-card"><div class="num">WHO WE ARE</div><h3>Research & Education Platform</h3><p>We are dedicated to making bioinformatics and computational biology accessible for students, beginners, and aspiring researchers worldwide.</p></div>
+        <div class="mission-card"><div class="num">WHAT WE DO</div><h3>Hands-on Training & Mentorship</h3><p>Bioinformatics tools training, molecular visualization, research methodology guidance, and academic support for research projects.</p></div>
+        <div class="mission-card"><div class="num">OUR MISSION</div><h3>Empower with Practical Skills</h3><p>To give learners the confidence to explore, analyze, and contribute to scientific research through real-world application and mentorship.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ FOUNDER ═══════════ -->
+<div class="page" id="page-founders">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Leadership</div>
+      <h1>Meet the <span class="teal">Founding Team</span></h1>
+      <p style="max-width:520px;margin-top:10px">Get Learn Bioinformatics was founded by four undergraduate researchers united by a shared goal — making bioinformatics and computational biology accessible to the next generation.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+
+      <div class="founder-card">
+        <div class="founder-avatar">🧬</div>
+        <div>
+          <div class="founder-name">Md Al Amin</div>
+          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+          <p>Undergraduate student of Biochemistry and Molecular Biology at <a href="https://jnu.ac.bd/department/portal/biochemistry" target="_blank">Jagannath University</a>, Bangladesh, with strong training in both experimental and computational biomedical research. He works as a Research Assistant at the Red-Green Research Centre, focusing on peptide-based drug design using computational biology, and contributes to departmental research on Bangladeshi phytochemicals as eco-friendly larvicidal alternatives, aligned with the One Health framework. He has served as President of ISCB RSG Bangladesh and is active in academic outreach and teaching, aiming to bridge computational and experimental approaches in drug discovery and molecular biology.</p>
+          <div class="founder-social">
+            <a href="mailto:alamin.jnu.bmb@gmail.com">✉ Email</a>
+            <a href="https://x.com/alamin_1037" target="_blank">🐦 X / Twitter</a>
+            <a href="https://linkedin.com/in/alaamin/" target="_blank">💼 LinkedIn</a>
+            <a href="https://github.com/alamin7009" target="_blank">🐙 GitHub</a>
+            <a href="https://orcid.org/0009-0002-4236-9212" target="_blank">🆔 ORCID</a>
+            <a href="https://scholar.google.com/citations?user=qNbuVDYAAAAJ&hl=en" target="_blank">🎓 Scholar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="founder-card">
+        <div class="founder-avatar">🧬</div>
+        <div>
+          <div class="founder-name">Rahnuma Tabassum</div>
+          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+          <p>Undergraduate student of Biochemistry and Molecular Biology at <a href="https://jnu.ac.bd/department/portal/biochemistry" target="_blank">Jagannath University</a>, Bangladesh, with strong training in both experimental and computational biomedical research. She completed the GSA Bioinformatics Internship 2025 (organized by GNOBB, SPSB, and ASI School of Life, in collaboration with Chiral Bangladesh and DeepBio Limited), and her research on integrated transcriptomic meta-analysis of liver hepatocellular carcinoma reflects her commitment to data-driven cancer research. She also studies bioactive compounds from Bangladeshi medicinal plants as eco-friendly larvicidal agents, aligned with the One Health framework. She has served as President of ISCB RSG Bangladesh and is active in mentoring and academic outreach.</p>
+          <div class="founder-social">
+            <a href="mailto:tabassumnehleen@gmail.com">✉ Email</a>
+            <a href="https://www.linkedin.com/in/rahnuma-tabassum-a51791218/" target="_blank">💼 LinkedIn</a>
+            <a href="https://github.com/BMBjnu27" target="_blank">🐙 GitHub</a>
+            <a href="https://orcid.org/0009-0002-4894-1785" target="_blank">🆔 ORCID</a>
+            <a href="https://scholar.google.com/citations?user=_4O3yosAAAAJ&hl=en" target="_blank">🎓 Scholar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="founder-card">
+        <div class="founder-avatar">🧬</div>
+        <div>
+          <div class="founder-name">Chinmoy Nandi</div>
+          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+          <p>Co-Founder of Get Learn Bioinformatics, dedicated to building an accessible platform for the next generation of bioinformatics researchers and students. Chinmoy helped establish GLB with the vision of creating a community where students and researchers can grow, innovate, and succeed in bioinformatics and computational biology, and leads GLB's webinar and outreach programs — including the AlphaFold webinar featured below.</p>
+        </div>
+      </div>
+
+      <div class="founder-card">
+        <div class="founder-avatar">🧬</div>
+        <div>
+          <div class="founder-name">Mir Mohammod Ehsanul Haque</div>
+          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+          <p>Co-Founder of Get Learn Bioinformatics, supporting the platform's mission to make computational biology accessible to students and early-career researchers. He contributes to GLB's training and webinar initiatives — including the AlphaFold webinar featured below, introducing AI-driven protein structure prediction to the GLB community.</p>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="eyebrow">Featured Webinar</div>
+      <h2 style="margin-bottom:8px">Explore <span class="teal">AlphaFold</span></h2>
+      <p style="margin-bottom:6px;max-width:600px">AlphaFold is a breakthrough AI tool developed by DeepMind that predicts the 3D structures of proteins from their amino acid sequences — transforming structural biology, drug design, protein engineering, and functional annotation.</p>
+      <p style="margin-bottom:28px;max-width:600px;font-size:12.5px;color:var(--text-dim)">Webinar hosted by Chinmoy Nandi &amp; Mir Mohammod Ehsanul Haque.</p>
+
+      <div class="alphafold-card">
+        <div class="eyebrow" style="margin-bottom:16px">Key Takeaways from the Webinar</div>
+        <div class="grid-2" style="margin-bottom:28px">
+          <div class="card"><p style="font-size:13.5px">✅ AlphaFold predicts protein structures with high accuracy from amino acid sequences alone.</p></div>
+          <div class="card"><p style="font-size:13.5px">✅ Directly applicable to drug discovery, molecular biology, and bioinformatics workflows.</p></div>
+          <div class="card"><p style="font-size:13.5px">✅ Free tools — AlphaFold DB and ColabFold — allow anyone to explore structure predictions.</p></div>
+          <div class="card"><p style="font-size:13.5px">✅ Understanding AlphaFold is key to the future of computational and structural biology.</p></div>
+        </div>
+
+        <div class="eyebrow" style="margin-bottom:16px">Explore AlphaFold Yourself</div>
+        <a class="alphafold-link" href="https://alphafold.ebi.ac.uk" target="_blank">
+          <div class="alphafold-link-icon">🏗️</div>
+          <div><div class="alphafold-link-title">AlphaFold Protein Structure Database (EMBL-EBI)</div><div class="alphafold-link-sub">Search and download predicted protein structures</div></div>
+        </a>
+        <a class="alphafold-link" href="https://colab.research.google.com/github/sokrypton/ColabFold" target="_blank">
+          <div class="alphafold-link-icon">⚡</div>
+          <div><div class="alphafold-link-title">ColabFold — Google Colab Notebook</div><div class="alphafold-link-sub">Try protein structure predictions interactively, for free</div></div>
+        </a>
+        <a class="alphafold-link" href="https://www.youtube.com/watch?v=gg7WjuFs8F4&list=PLqYmG7hTraZAhkAh72kzzLC4r2O4VoVgz" target="_blank">
+          <div class="alphafold-link-icon">▶</div>
+          <div><div class="alphafold-link-title">YouTube: AlphaFold — The Making of a Scientific Breakthrough</div><div class="alphafold-link-sub">Video overview by DeepMind</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ COURSES ═══════════ -->
+<div class="page" id="page-courses">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Curriculum</div>
+      <h1>Courses &amp; <span class="teal">Training</span></h1>
+      <p style="max-width:500px;margin-top:10px">Structured learning paths designed for beginners and aspiring researchers in bioinformatics and computational drug design.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">Track 1</div>
+      <h2 style="margin-bottom:28px">Basic Bioinformatics <span class="teal">Course</span></h2>
+      <div class="grid-2">
+        <div class="course-card">
+          <div class="course-top">
+            <span class="course-level lv-b">Beginner</span>
+            <div class="course-code">GLB-101</div>
+            <div class="course-title">Basic Research and Bioinformatics Training</div>
+            <div class="course-desc">Foundational course on research skills and practical bioinformatics techniques, including scientific literature analysis, sequence exploration, and molecular visualization.</div>
+          </div>
+          <div class="course-bottom">
+            <span class="start-date">📅 Next batch: 2026-06-01</span>
+          </div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;gap:10px">
+          <div class="eyebrow" style="margin-bottom:0">What You Will Learn</div>
+          <div style="font-size:13.5px;color:var(--text-muted);line-height:1.8">
+            <div style="padding:7px 0;border-bottom:1px solid var(--border)">🔬 <strong style="color:var(--white)">Research Fundamentals</strong> — Design, literature review, hypothesis formulation</div>
+            <div style="padding:7px 0;border-bottom:1px solid var(--border)">📄 <strong style="color:var(--white)">Scientific Literature</strong> — Search, read, and summarize articles efficiently</div>
+            <div style="padding:7px 0;border-bottom:1px solid var(--border)">🖥️ <strong style="color:var(--white)">Bioinformatics Tools</strong> — Sequence retrieval, physicochemical analysis, molecular visualization</div>
+            <div style="padding:7px 0;border-bottom:1px solid var(--border)">🧪 <strong style="color:var(--white)">Practical Exercises</strong> — Hands-on training using real datasets</div>
+            <div style="padding:7px 0">📊 <strong style="color:var(--white)">Data Management</strong> — Document findings and prepare reports</div>
+          </div>
+          <div style="margin-top:8px">
+            <a class="btn btn-teal" href="https://www.facebook.com/getlearnbioinformatics" target="_blank" style="font-size:13px;padding:9px 18px">Enroll via Facebook →</a>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="eyebrow">Track 2</div>
+      <h2 style="margin-bottom:28px">Computer Aided Drug <span class="red">Design (CADD)</span></h2>
+      <div class="grid-2">
+        <div class="course-card">
+          <div class="course-top">
+            <span class="course-level lv-i">Intermediate</span>
+            <div class="course-code">GLB-201</div>
+            <div class="course-title">CADD — Computational Drug Discovery</div>
+            <div class="course-desc">Structure-based and ligand-based approaches to drug design, molecular docking, ADMET prediction, phytochemical screening, and cheminformatics analysis for drug target identification.</div>
+          </div>
+          <div class="course-bottom">
+            <span class="course-meta">⚗️ Prerequisites: GLB-101 or equivalent</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="eyebrow" style="margin-bottom:12px">Research Topics Covered</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span class="tag" style="display:block;width:fit-content">Molecular Docking (AutoDock, Vina)</span>
+            <span class="tag" style="display:block;width:fit-content">ADMET Property Prediction</span>
+            <span class="tag" style="display:block;width:fit-content">Phytochemical Screening</span>
+            <span class="tag" style="display:block;width:fit-content">Cheminformatics Analysis</span>
+            <span class="tag" style="display:block;width:fit-content">Drug-Target Interaction</span>
+            <span class="tag" style="display:block;width:fit-content">Structure-Based Drug Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:36px">
+        <a class="btn btn-teal" href="https://www.facebook.com/getlearnbioinformatics" target="_blank">Enroll / Ask About Next Batch →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SESSIONS ═══════════ -->
+<div class="page" id="page-sessions">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Events</div>
+      <h1>Sessions &amp; <span class="teal">Talks</span></h1>
+      <p style="max-width:500px;margin-top:10px">Workshops, webinars, and scientific sessions organized by GLB for our learning community.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">Bioinformatics Talks</div>
+      <h2 style="margin-bottom:28px">Featured <span class="teal">Webinar</span></h2>
+      <div class="grid-2" style="margin-bottom:48px">
+        <div class="session-card">
+          <div class="session-type">Webinar · Structural Biology</div>
+          <h3 style="margin-bottom:8px">Introduction to AlphaFold</h3>
+          <p style="font-size:13.5px;margin-bottom:14px">A webinar introducing the basics of AlphaFold by DeepMind — predicting protein structures from amino acid sequences and its applications in drug design and molecular biology.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span class="tag">AlphaFold</span><span class="tag">Structural Biology</span><span class="tag">Drug Discovery</span>
+          </div>
+          <div style="margin-top:16px"><a class="btn btn-outline" onclick="showPage('founders')" style="font-size:12.5px;padding:8px 16px">View Resources →</a></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow" style="margin-bottom:12px">What Was Covered</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px">
+            <li style="font-size:13.5px;color:var(--text-muted);padding-bottom:10px;border-bottom:1px solid var(--border)">🔬 AlphaFold structure prediction accuracy and methodology</li>
+            <li style="font-size:13.5px;color:var(--text-muted);padding-bottom:10px;border-bottom:1px solid var(--border)">🧪 Applications in drug discovery and protein engineering</li>
+            <li style="font-size:13.5px;color:var(--text-muted);padding-bottom:10px;border-bottom:1px solid var(--border)">💻 Hands-on: AlphaFold DB and ColabFold exploration</li>
+            <li style="font-size:13.5px;color:var(--text-muted)">🚀 Future of computational biology with AI</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="eyebrow">Scientific Sessions</div>
+      <h2 style="margin-bottom:28px">Academic &amp; <span class="red">Conference Participation</span></h2>
+      <div class="grid-2">
+        <div class="session-card">
+          <div class="session-type">Conference · Poster · 2025</div>
+          <h3 style="margin-bottom:8px">39th Annual BSM Conference</h3>
+          <p style="font-size:13.5px;margin-bottom:12px">Poster presentation on Bioactivity Assessment of Phytochemicals from <em>Crateva religiosa</em> against <em>Aedes aegypti</em> — One Health and Microbiome category.</p>
+          <span class="tag">One Health</span> <span class="tag">Microbiome</span> <span class="tag">Dengue</span>
+        </div>
+        <div class="session-card">
+          <div class="session-type">Symposium · Poster · 2025</div>
+          <h3 style="margin-bottom:8px">2nd ISCB RSG Bangladesh CompBio Symposium</h3>
+          <p style="font-size:13.5px;margin-bottom:12px">Cheminformatics-based analysis of compounds as inhibitors of ACE2 receptor using seaweed metabolites. <a href="https://doi.org/10.5281/zenodo.14891694" target="_blank">doi: 10.5281/zenodo.14891694</a></p>
+          <span class="tag">ACE2</span> <span class="tag">Cheminformatics</span> <span class="tag">Seaweed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PROJECTS ═══════════ -->
+<div class="page" id="page-projects">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Research</div>
+      <h1>Our <span class="teal">Projects</span></h1>
+      <p style="max-width:520px;margin-top:10px">Current and completed computational biology and bioinformatics research works by GLB instructors and collaborators.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="grid-2">
+        <div class="project-card"><div class="project-icon pi-r">🎗️</div><h3 style="margin-bottom:8px">Cancer-Related Computational Research</h3><p style="font-size:13.5px">Cheminformatics-based analysis of novel compounds targeting PI3k/Akt/mTOR pathway for HR+/HER2- breast cancer subtype using phytochemicals from <em>Nelumbo nucifera</em>.</p><div style="margin-top:12px"><span class="tag">Breast Cancer</span> <span class="tag">PI3K/mTOR</span> <span class="tag">Cheminformatics</span></div></div>
+        <div class="project-card"><div class="project-icon pi-t">🧠</div><h3 style="margin-bottom:8px">Neurological Disease Drug Discovery</h3><p style="font-size:13.5px">Microbial biomolecule-driven identification of next-generation GSK-3β inhibitors for brain disorders — published in Computational Biology and Chemistry, 2025.</p><div style="margin-top:12px"><span class="tag">GSK-3β</span> <span class="tag">Brain Disorders</span> <span class="tag">Microbial</span></div></div>
+        <div class="project-card"><div class="project-icon pi-t">🦠</div><h3 style="margin-bottom:8px">ACE2 Receptor Inhibitor Screening</h3><p style="font-size:13.5px">Cheminformatics-based identification of compounds inhibiting the ACE2 receptor through interaction with seaweed metabolites — presented at ISCB RSG Bangladesh 2025.</p><div style="margin-top:12px"><span class="tag">ACE2</span> <span class="tag">Seaweed</span> <span class="tag">COVID-19</span></div></div>
+        <div class="project-card"><div class="project-icon pi-r">🦟</div><h3 style="margin-bottom:8px">Dengue Virus Inhibitor Studies</h3><p style="font-size:13.5px">Structure-based computational analysis targeting NS2B and NS3 proteins of Dengue virus, and bioactivity assessment of phytochemicals from <em>Crateva religiosa</em> against <em>Aedes aegypti</em>.</p><div style="margin-top:12px"><span class="tag">Dengue</span> <span class="tag">NS2B/NS3</span> <span class="tag">Phytochemical</span></div></div>
+        <div class="project-card"><div class="project-icon pi-t">💊</div><h3 style="margin-bottom:8px">Communicable Disease Drug Candidates</h3><p style="font-size:13.5px">Computational exploration of drug candidates for communicable diseases including structure-based screening of <em>Glycyrrhiza glabra</em> against <em>Cryptococcus neoformans</em> FTase.</p><div style="margin-top:12px"><span class="tag">Cryptococcal Meningitis</span> <span class="tag">FTase</span> <span class="tag">Natural Products</span></div></div>
+        <div class="project-card"><div class="project-icon pi-r">⚗️</div><h3 style="margin-bottom:8px">Structure-Based Phytochemical Screening</h3><p style="font-size:13.5px">Systematic structure-based screening of phytochemicals and small molecules against various biological targets using molecular docking and computational chemistry approaches.</p><div style="margin-top:12px"><span class="tag">Molecular Docking</span> <span class="tag">Small Molecules</span> <span class="tag">CADD</span></div></div>
+      </div>
+
+      <div class="card" style="margin-top:22px;text-align:center">
+        <div class="project-icon pi-t" style="margin:0 auto 14px">🤖</div>
+        <h3 style="margin-bottom:8px">Bioinformatics & CADD-Driven Biomedical Research</h3>
+        <p style="font-size:13.5px;max-width:600px;margin:0 auto">Ongoing integration of bioinformatics and Computer Aided Drug Design methodologies to address complex biomedical challenges across multiple disease areas.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PUBLICATIONS ═══════════ -->
+<div class="page" id="page-publications">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Scholarly Work</div>
+      <h1>Publications</h1>
+      <p style="margin-top:8px;color:var(--text-muted);font-size:14px">List of publications of GLB Instructors · Categories: Bioinformatics · Publication · CADD</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="eyebrow">Peer-Reviewed Articles</div>
+      <h2 style="margin-bottom:28px">Journal <span class="teal">Publications</span></h2>
+
+      <div class="pub-card">
+        <div class="pub-num">PUBLICATION 01 · 2025 · Biochemical and Biophysical Research Communications</div>
+        <div class="pub-title">Cheminformatics-based analysis identified Novel compounds from <em>Nelumbo nucifera</em> as potential inhibitors targeting PI3k/Akt/mTOR Pathway of HR+/HER2- subtype for Breast Cancer</div>
+        <div class="pub-authors">Ahmed SF, Barua P, Amin MA, Tabassum R, Haque MME, Islam L, Hossain MS, Verma AK</div>
+        <div class="pub-journal">Biochemical and Biophysical Research Communications, 2025</div>
+        <div class="pub-doi">DOI: <a href="https://doi.org/10.1016/j.bbrc.2025.152953" target="_blank">10.1016/j.bbrc.2025.152953</a></div>
+        <div style="margin-top:10px"><span class="tag">Breast Cancer</span> <span class="tag">PI3K/mTOR</span> <span class="tag">CADD</span> <span class="tag">Nelumbo nucifera</span></div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-num">PUBLICATION 02 · 2025 · Computational Biology and Chemistry</div>
+        <div class="pub-title">Microbial biomolecule-driven identification of next-gen GSK-3β inhibitors for brain disorders</div>
+        <div class="pub-authors">Islam L, Sarker H, Amin MA, Tabassum R, Nandi A, Islam T, Patwary MA, Ibnat F, Ahmed F, Siddiquee NH</div>
+        <div class="pub-journal">Computational Biology and Chemistry, 2025</div>
+        <div class="pub-doi">DOI: <a href="https://doi.org/10.1016/j.compbiolchem.2025.108860" target="_blank">10.1016/j.compbiolchem.2025.108860</a></div>
+        <div style="margin-top:10px"><span class="tag">GSK-3β</span> <span class="tag">Brain Disorders</span> <span class="tag">Microbial Biomolecules</span></div>
+      </div>
+
+      <div class="pub-card">
+        <div class="pub-num">PUBLICATION 03 · 2024 · Chemistry & Biodiversity</div>
+        <div class="pub-title">Natural Products in Precision Neurological Disease (Cryptococcal Meningitis): Structure-Based Phytochemical Screening of <em>Glycyrrhiza glabra</em> Plant Against <em>Cryptococcus neoformans</em> Farnesyltransferase (FTase)</div>
+        <div class="pub-authors">Siddiquee NH, Sujan MSI, Dremit TI, Rahat EH, Barman K, Karim M, Nandi C, Akter S, Talukder MEK, Hosen MS, Khaled M, Saha O, et al.</div>
+        <div class="pub-journal">Chemistry & Biodiversity, 2024</div>
+        <div class="pub-doi">DOI: <a href="https://doi.org/10.1002/cbdv.202401987" target="_blank">10.1002/cbdv.202401987</a></div>
+        <div style="margin-top:10px"><span class="tag">Cryptococcal Meningitis</span> <span class="tag">FTase</span> <span class="tag">Glycyrrhiza glabra</span> <span class="tag">Natural Products</span></div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="eyebrow">Conference</div>
+      <h2 style="margin-bottom:24px">Poster <span class="red">Presentations</span></h2>
+
+      <div class="conf-card">
+        <div class="pub-num">POSTER 01 · 2024 · 39th Annual Bangladesh Society for Microbiology Conference</div>
+        <div class="pub-title">Bioactivity Assessment of Phytochemicals from <em>Crateva religiosa</em> against <em>Aedes aegypti</em> with Insights into their Mode of Action via Computational Analysis</div>
+        <div class="pub-authors">Tabassum R, Nandi C, Amin MA, Haque ME, Haq MA, Uddin MN, Islam A, Rahman N</div>
+        <div class="pub-journal">39th Annual BSM Conference · One Health and Microbiome category</div>
+        <div style="margin-top:10px"><span class="tag">Dengue</span> <span class="tag">Aedes aegypti</span> <span class="tag">BSM</span> <span class="tag">One Health</span></div>
+      </div>
+
+      <div class="conf-card">
+        <div class="pub-num">POSTER 02 · 2025 · 2nd ISCB RSG Bangladesh CompBio Symposium</div>
+        <div class="pub-title">Cheminformatics-based analysis identified compounds as inhibitor of ACE2 receptor by interacting with seaweed metabolites</div>
+        <div class="pub-authors">Amin MA, Tabassum R, Haque MME, Nandi C, Islam Dr. Md. R.</div>
+        <div class="pub-journal">2nd ISCB RSG Bangladesh CompBio Symposium, 2025</div>
+        <div class="pub-doi">DOI: <a href="https://doi.org/10.5281/zenodo.14891694" target="_blank">10.5281/zenodo.14891694</a></div>
+        <div style="margin-top:10px"><span class="tag">ACE2</span> <span class="tag">Seaweed</span> <span class="tag">Cheminformatics</span> <span class="tag">ISCB</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PIPELINE ═══════════ -->
+<div class="page" id="page-pipeline">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Computational Infrastructure</div>
+      <h1>Research <span class="teal">Pipelines</span></h1>
+      <p style="max-width:560px;margin-top:10px">Computational pipelines developed by GLB for research in computational biology and bioinformatics. Designed to ensure reproducibility, scalability, and efficient data analysis across research domains.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div style="background:var(--surface2);border:1px solid rgba(18,143,139,0.3);border-radius:12px;padding:24px;margin-bottom:36px">
+        <div class="eyebrow" style="margin-bottom:8px">Status Update</div>
+        <p style="font-size:14px">Detailed documentation, workflows, and resources are being prepared. Pipelines will be updated here as they are finalized and tested for reproducibility. <strong style="color:var(--teal-light)">Stay tuned for upcoming releases.</strong></p>
+      </div>
+
+      <div class="eyebrow">Planned Pipelines</div>
+      <h2 style="margin-bottom:24px">Upcoming <span class="teal">Workflows</span></h2>
+
+      <div class="pipeline-item"><div class="pipe-num">PL-01</div><div class="pipe-name">CADD — Structure-Based Drug Discovery Pipeline</div><span class="pipe-status ps-upcoming">Upcoming</span></div>
+      <div class="pipeline-item"><div class="pipe-num">PL-02</div><div class="pipe-name">Phytochemical Screening Workflow</div><span class="pipe-status ps-upcoming">Upcoming</span></div>
+      <div class="pipeline-item"><div class="pipe-num">PL-03</div><div class="pipe-name">Molecular Docking & ADMET Analysis</div><span class="pipe-status ps-upcoming">Upcoming</span></div>
+      <div class="pipeline-item"><div class="pipe-num">PL-04</div><div class="pipe-name">Sequence Analysis & BLAST Pipeline</div><span class="pipe-status ps-soon">Coming Soon</span></div>
+      <div class="pipeline-item"><div class="pipe-num">PL-05</div><div class="pipe-name">Protein Structure Prediction (AlphaFold)</div><span class="pipe-status ps-soon">Coming Soon</span></div>
+      <div class="pipeline-item"><div class="pipe-num">PL-06</div><div class="pipe-name">Gene Expression & Variant Analysis</div><span class="pipe-status ps-soon">Coming Soon</span></div>
+
+      <div style="text-align:center;margin-top:36px">
+        <a class="btn btn-outline" onclick="showPage('contact')">Get Notified of Releases →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="page" id="page-contact">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">Get In Touch</div>
+      <h1>Contact <span class="teal">GLB</span></h1>
+      <p style="max-width:480px;margin-top:10px">Reach out for course enrollment, collaboration, or any questions about our research and training programs.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">✉️</div>
+            <div><div class="contact-info-label">Email</div><div class="contact-info-val"><a href="mailto:info.getlearnbioinformatics@gmail.com">info.getlearnbioinformatics@gmail.com</a></div></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📘</div>
+            <div><div class="contact-info-label">Facebook Page</div><div class="contact-info-val"><a href="https://www.facebook.com/getlearnbioinformatics" target="_blank">facebook.com/getlearnbioinformatics</a></div></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">👥</div>
+            <div><div class="contact-info-label">Facebook Group</div><div class="contact-info-val"><a href="https://facebook.com/groups/934011292608963/" target="_blank">GLB Community Group</a></div></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">▶</div>
+            <div><div class="contact-info-label">YouTube</div><div class="contact-info-val"><a href="https://youtube.com/@getlearn_bioinformatics" target="_blank">@getlearn_bioinformatics</a></div></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📷</div>
+            <div><div class="contact-info-label">Instagram</div><div class="contact-info-val"><a href="https://www.instagram.com/bio.info_shikhbo" target="_blank">@bio.info_shikhbo</a></div></div>
+          </div>
+
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-top:8px">
+            <div class="eyebrow" style="margin-bottom:10px">Enroll in a Course</div>
+            <p style="font-size:13.5px;margin-bottom:14px">Interested in joining our Basic Bioinformatics or CADD course? Drop a message on our Facebook page to get started.</p>
+            <a class="btn btn-teal" href="https://www.facebook.com/getlearnbioinformatics" target="_blank" style="font-size:13px;padding:9px 18px">Message on Facebook →</a>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <h3 style="font-family:var(--font-b);font-size:17px;margin-bottom:22px">Send a Message</h3>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" placeholder="Your name"/></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" placeholder="Your surname"/></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="you@university.edu"/></div>
+          <div class="form-group">
+            <label class="form-label">Reason for Contact</label>
+            <select class="form-select">
+              <option>Course Enrollment</option>
+              <option>Research Collaboration</option>
+              <option>Pipeline Inquiry</option>
+              <option>General Question</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Tell us about yourself and what you're interested in..."></textarea></div>
+          <button class="btn btn-teal" style="width:100%;justify-content:center" onclick="handleSubmit()">Send Message →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const nl = document.querySelector('.nav-links');
+    if (nl) nl.style.display = '';
+  }
+
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    if (!links) return;
+    if (links.style.display === 'flex') {
+      links.style.display = '';
+    } else {
+      Object.assign(links.style, {
+        display: 'flex', flexDirection: 'column',
+        position: 'fixed', top: '64px', left: '0', right: '0',
+        background: 'rgba(6,14,14,0.98)', padding: '14px',
+        gap: '3px', borderBottom: '1px solid var(--border)', zIndex: '999'
+      });
+    }
+  }
+
+  // DNA Sequence Ticker
+  const bases = ['A','T','G','C'];
+  const track = document.getElementById('seqTrack');
+  if (track) {
+    let seq = '';
+    for (let i = 0; i < 160; i++) seq += bases[Math.floor(Math.random()*4)];
+    (seq + seq).split('').forEach(b => {
+      const s = document.createElement('span');
+      s.className = 'seq-char ' + b;
+      s.textContent = b;
+      track.appendChild(s);
+    });
+  }
+
+  function handleSubmit() {
+    alert('Thank you for reaching out to Get Learn Bioinformatics! We\'ll get back to you soon. 🧬\n\nYou can also reach us directly at: info.getlearnbioinformatics@gmail.com');
+  }
+</script>
+</body>
+</html>
