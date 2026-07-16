@@ -514,7 +514,7 @@
             <li>Full trajectory files, plots, and a written report delivered</li>
           </ul>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
-            <a class="btn btn-teal" onclick="showPage('contact')">Request This Service →</a>
+            <a class="btn btn-teal" onclick="showPage('mdconfig')">Configure & Get a Quote →</a>
             <a class="btn btn-outline" onclick="showPage('pipeline')">See Our Pipeline</a>
           </div>
         </div>
@@ -562,14 +562,117 @@
       <h2 style="margin-bottom:8px">From <span class="teal">Order</span> to Results</h2>
       <p style="max-width:560px">A straightforward workflow so you always know where your analysis stands.</p>
       <div class="service-steps">
-        <div class="service-step"><div class="step-num">STEP 01</div><h3>Configure</h3><p>Tell us your protein/complex, simulation time, and any add-on analyses you need.</p></div>
+        <div class="service-step"><div class="step-num">STEP 01</div><h3>Configure</h3><p>Tell us your protein/complex, simulation time, and any add-on analyses you need.</p><a onclick="showPage('mdconfig')" style="display:inline-block;margin-top:10px;font-size:12px;font-weight:600;cursor:pointer">Try the Calculator →</a></div>
         <div class="service-step"><div class="step-num">STEP 02</div><h3>Confirm</h3><p>We review feasibility and confirm scope, timeline, and cost before starting.</p></div>
         <div class="service-step"><div class="step-num">STEP 03</div><h3>Simulate</h3><p>Our team runs the simulation and post-processing analyses on our compute pipeline.</p></div>
         <div class="service-step"><div class="step-num">STEP 04</div><h3>Deliver</h3><p>You receive trajectory files, plots, and a written summary report of the results.</p></div>
       </div>
 
       <div style="text-align:center;margin-top:44px">
-        <a class="btn btn-teal" onclick="showPage('contact')">Start a Service Request →</a>
+        <a class="btn btn-teal" onclick="showPage('mdconfig')">Configure Your Simulation →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MD SIMULATION CONFIGURATOR ═══════════ -->
+<div class="page" id="page-mdconfig">
+  <div class="page-header">
+    <div class="container">
+      <div class="eyebrow">STEP 01 · Molecular Dynamics Simulation</div>
+      <h1>Configure Your <span class="teal">Analysis</span></h1>
+      <p style="max-width:560px;margin-top:10px">Set the number of complexes, choose a simulation length, and add any post-simulation analyses you need. The order summary on the right updates instantly as you go.</p>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:48px">
+    <div class="container">
+      <div class="mdconfig-layout">
+
+        <!-- LEFT: CONFIG PANEL -->
+        <div class="config-panel">
+
+          <!-- Number of Complexes -->
+          <div class="config-card">
+            <h3>1. Number of Complexes</h3>
+            <div class="config-desc">How many protein / protein–ligand complexes should we simulate?</div>
+            <div class="slider-row">
+              <input type="range" id="numComplexes" min="1" max="20" value="5" oninput="updateMDOrder()" />
+              <div class="slider-value"><span id="numComplexesVal">5</span></div>
+            </div>
+          </div>
+
+          <!-- Simulation Time -->
+          <div class="config-card">
+            <h3>2. Simulation Time</h3>
+            <div class="config-desc">Longer runs give more conformational sampling, at a higher cost per complex.</div>
+            <select class="form-select" id="simTime" onchange="updateMDOrder()">
+              <option value="50">50 ns — ৳1,000 / complex</option>
+              <option value="100">100 ns — ৳2,000 / complex</option>
+              <option value="200">200 ns — ৳4,000 / complex</option>
+              <option value="300">300 ns — ৳6,000 / complex</option>
+              <option value="400">400 ns — ৳8,000 / complex</option>
+              <option value="500">500 ns — ৳10,000 / complex</option>
+              <option value="1000">1000 ns — ৳20,000 / complex</option>
+            </select>
+          </div>
+
+          <!-- Add-on Analyses -->
+          <div class="config-card">
+            <h3>3. Add-on Analyses</h3>
+            <div class="config-desc">Optional. Click a card to add it to your order.</div>
+            <div class="addon-grid">
+              <div class="addon-card" id="addon-mmgbsa" onclick="toggleAddon('mmgbsa')">
+                <div class="addon-check">✓</div>
+                <div class="addon-name">MMGBSA</div>
+                <div class="addon-desc">Binding free energy calculation</div>
+                <div class="addon-price">+ ৳200 / complex</div>
+              </div>
+              <div class="addon-card" id="addon-pca" onclick="toggleAddon('pca')">
+                <div class="addon-check">✓</div>
+                <div class="addon-name">PCA</div>
+                <div class="addon-desc">Principal component analysis</div>
+                <div class="addon-price">+ ৳150 / complex</div>
+              </div>
+              <div class="addon-card" id="addon-dccm" onclick="toggleAddon('dccm')">
+                <div class="addon-check">✓</div>
+                <div class="addon-name">DCCM</div>
+                <div class="addon-desc">Dynamic cross-correlation matrix</div>
+                <div class="addon-price">+ ৳150 / complex</div>
+              </div>
+              <div class="addon-card" id="addon-docking" onclick="toggleAddon('docking')">
+                <div class="addon-check">✓</div>
+                <div class="addon-name">Docking</div>
+                <div class="addon-desc">Structure-based ligand docking</div>
+                <div class="addon-price">+ ৳1 / ligand</div>
+                <div class="docking-extra" id="dockingExtra" style="display:none" onclick="event.stopPropagation()">
+                  <label>Ligands</label>
+                  <input type="number" id="numLigands" min="1" value="1" oninput="updateMDOrder()" />
+                </div>
+              </div>
+              <div class="addon-card" id="addon-dft" onclick="toggleAddon('dft')">
+                <div class="addon-check">✓</div>
+                <div class="addon-name">DFT</div>
+                <div class="addon-desc">Density functional theory calculation</div>
+                <div class="addon-price">+ ৳1000 / complex</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: ORDER SUMMARY -->
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div id="orderLines"></div>
+          <div class="order-total">
+            <div class="ot-label">Total</div>
+            <div class="ot-amt" id="orderTotal">৳0</div>
+          </div>
+          <a class="btn btn-teal" style="width:100%;justify-content:center;margin-top:20px" onclick="requestMDQuote()">Request This Service →</a>
+          <div class="order-note">No payment required now — this sends your configuration to our team so we can confirm scope and cost before starting.</div>
+        </div>
+
       </div>
     </div>
   </div>
