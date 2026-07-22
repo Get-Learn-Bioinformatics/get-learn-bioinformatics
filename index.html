@@ -1180,7 +1180,6 @@
     const nl = document.querySelector('.nav-links');
     if (nl) nl.style.display = '';
   }
-
   function toggleMenu() {
     const links = document.querySelector('.nav-links');
     if (!links) return;
@@ -1195,7 +1194,6 @@
       });
     }
   }
-
   // DNA Sequence Ticker
   const bases = ['A','T','G','C'];
   const track = document.getElementById('seqTrack');
@@ -1209,10 +1207,85 @@
       track.appendChild(s);
     });
   }
-
   function handleSubmit() {
     alert('Thank you for reaching out to Get Learn Bioinformatics! We\'ll get back to you soon. 🧬\n\nYou can also reach us directly at: info.getlearnbioinformatics@gmail.com');
   }
+
+  // ===== MD Simulation Configurator =====
+  const MD_SIM_PRICE = { "50":1000, "100":2000, "200":4000, "300":6000, "400":8000, "500":10000, "1000":20000 };
+  const MD_ADDON_PRICE = { mmgbsa:200, pca:150, dccm:150, dft:1000, docking:1 }; // docking is per-ligand
+
+  let mdActiveAddons = new Set();
+
+  function toggleAddon(name) {
+    const card = document.getElementById('addon-' + name);
+    if (!card) return;
+    if (mdActiveAddons.has(name)) {
+      mdActiveAddons.delete(name);
+      card.classList.remove('active');
+    } else {
+      mdActiveAddons.add(name);
+      card.classList.add('active');
+    }
+
+    const dockingExtra = document.getElementById('dockingExtra');
+    if (dockingExtra) {
+      dockingExtra.style.display = mdActiveAddons.has('docking') ? 'block' : 'none';
+    }
+
+    updateMDOrder();
+  }
+
+  function updateMDOrder() {
+    const numComplexesEl = document.getElementById('numComplexes');
+    if (!numComplexesEl) return; // not on this page
+
+    const numComplexes = parseInt(numComplexesEl.value, 10) || 1;
+    const numComplexesValEl = document.getElementById('numComplexesVal');
+    if (numComplexesValEl) numComplexesValEl.textContent = numComplexes;
+
+    const simTimeVal = document.getElementById('simTime').value;
+    const simPricePerComplex = MD_SIM_PRICE[simTimeVal] || 0;
+
+    const numLigandsEl = document.getElementById('numLigands');
+    const numLigands = numLigandsEl ? (parseInt(numLigandsEl.value, 10) || 1) : 1;
+
+    let lines = [];
+    let total = 0;
+
+    const simSubtotal = simPricePerComplex * numComplexes;
+    lines.push([`MD Simulation — ${simTimeVal} ns × ${numComplexes} complex${numComplexes > 1 ? 'es' : ''}`, simSubtotal]);
+    total += simSubtotal;
+
+    ['mmgbsa', 'pca', 'dccm', 'dft'].forEach(key => {
+      if (mdActiveAddons.has(key)) {
+        const subtotal = MD_ADDON_PRICE[key] * numComplexes;
+        lines.push([`${key.toUpperCase()} × ${numComplexes} complex${numComplexes > 1 ? 'es' : ''}`, subtotal]);
+        total += subtotal;
+      }
+    });
+
+    if (mdActiveAddons.has('docking')) {
+      const subtotal = MD_ADDON_PRICE.docking * numLigands;
+      lines.push([`Docking × ${numLigands} ligand${numLigands > 1 ? 's' : ''}`, subtotal]);
+      total += subtotal;
+    }
+
+    document.getElementById('orderLines').innerHTML = lines.map(([label, amt]) => `
+      <div class="order-line">
+        <span>${label}</span>
+        <span>৳${amt.toLocaleString()}</span>
+      </div>
+    `).join('');
+
+    document.getElementById('orderTotal').textContent = `৳${total.toLocaleString()}`;
+  }
+
+  function requestMDQuote() {
+    alert('Thanks! Your configuration has been noted. Our team will reach out to confirm scope and cost.\n\nYou can also reach us directly at: info.getlearnbioinformatics@gmail.com');
+  }
+
+  document.addEventListener('DOMContentLoaded', updateMDOrder);
 </script>
 </body>
 </html>
