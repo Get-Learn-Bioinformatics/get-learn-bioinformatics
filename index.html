@@ -36,6 +36,13 @@
     .hamburger{display:none;cursor:pointer;flex-direction:column;gap:5px}
     .hamburger span{display:block;width:22px;height:2px;background:var(--text-muted);border-radius:2px}
 
+    /* NAV DROPDOWN */
+    .nav-dropdown{position:relative}
+    .nav-dropdown > a::after{content:' ▾';font-size:9px;opacity:.7}
+    .dropdown-menu{display:none;list-style:none;position:absolute;top:100%;left:0;background:var(--bg2);border:1px solid var(--border);border-radius:8px;min-width:190px;padding:6px;z-index:1100;box-shadow:0 12px 28px rgba(0,0,0,0.35)}
+    .nav-dropdown:hover .dropdown-menu,.nav-dropdown:focus-within .dropdown-menu{display:block}
+    .dropdown-menu li a{display:block;padding:8px 10px;border-radius:6px;font-size:12.5px;white-space:nowrap}
+
     /* PAGES */
     .page{display:none;padding-top:64px;min-height:100vh}
     .page.active{display:block}
@@ -177,14 +184,24 @@
     .ps-upcoming{background:var(--teal-glow);color:var(--teal-light)}
     .ps-soon{background:var(--red-glow);color:var(--red)}
 
-    /* ═══ PEOPLE / FOUNDER ═══ */
-    .founder-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;margin-bottom:40px}
+    /* ═══ PEOPLE ═══ */
+    .people-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px;border-bottom:1px solid var(--border);padding-bottom:0}
+    .people-tab{background:transparent;border:none;color:var(--text-muted);font-family:var(--font-b);font-size:13.5px;font-weight:600;padding:10px 18px;cursor:pointer;border-radius:8px 8px 0 0;position:relative;transition:color .2s}
+    .people-tab:hover{color:var(--teal-light)}
+    .people-tab.active{color:var(--white)}
+    .people-tab.active::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--teal)}
+    .people-tab-count{font-family:var(--font-m);font-size:10.5px;color:var(--text-dim);margin-left:6px}
+    .people-panel{display:none}
+    .people-panel.active{display:block}
+    .founder-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;margin-bottom:24px}
     .founder-avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--bg3),var(--surface2));display:flex;align-items:center;justify-content:center;font-size:42px;border:2px solid var(--border);flex-shrink:0}
     .founder-name{font-family:var(--font-d);font-size:1.6rem;color:var(--white);margin-bottom:4px}
     .founder-role{font-family:var(--font-m);font-size:11px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
     .founder-social{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
     .founder-social a{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:6px 11px;font-size:12px;color:var(--text-muted);text-decoration:none;transition:all .2s}
     .founder-social a:hover{border-color:var(--teal);color:var(--teal-light);text-decoration:none}
+    .people-empty{background:var(--surface);border:1px dashed var(--border);border-radius:14px;padding:40px;text-align:center}
+    .people-empty p{max-width:440px;margin:0 auto}
 
     .alphafold-card{background:linear-gradient(135deg,var(--surface) 0%,var(--bg3) 100%);border:1px solid rgba(18,143,139,0.3);border-radius:14px;padding:32px}
     .alphafold-link{display:flex;align-items:flex-start;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;text-decoration:none;transition:border-color .2s}
@@ -357,6 +374,7 @@
       .footer-grid{grid-template-columns:1fr 1fr}
       .nav-links{display:none}
       .hamburger{display:flex}
+      .nav-dropdown .dropdown-menu{position:static;display:block;border:none;background:transparent;padding-left:12px}
     }
     @media(max-width:600px){
       .form-row{grid-template-columns:1fr}
@@ -385,12 +403,19 @@
     <li><a onclick="showPage('projects')">Projects</a></li>
     <li><a onclick="showPage('publications')">Publications</a></li>
     <li><a onclick="showPage('pipeline')">Pipeline</a></li>
-    <li><a onclick="showPage('founders')">Founders</a></li>
+    <li class="nav-dropdown">
+      <a onclick="showPage('people')">People</a>
+      <ul class="dropdown-menu">
+        <li><a onclick="showPeopleTab('founders')">Founders</a></li>
+        <li><a onclick="showPeopleTab('ra')">RA</a></li>
+        <li><a onclick="showPeopleTab('ca')">CA</a></li>
+      </ul>
+    </li>
     <li><a onclick="showPage('contact')" class="nav-cta">Contact</a></li>
   </ul>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
-  
+
 <!-- ═══════════ HOME ═══════════ -->
 <div class="page active" id="page-home">
   <div class="seq-ticker"><div class="seq-track" id="seqTrack"></div></div>
@@ -472,7 +497,7 @@
       </div>
       <div class="footer-col"><h4>Learn</h4><ul class="footer-links"><li><a onclick="showPage('courses')">Courses</a></li><li><a onclick="showPage('sessions')">Sessions & Talks</a></li><li><a onclick="showPage('pipeline')">Pipeline</a></li></ul></div>
       <div class="footer-col"><h4>Research</h4><ul class="footer-links"><li><a onclick="showPage('services')">Services</a></li><li><a onclick="showPage('projects')">Projects</a></li><li><a onclick="showPage('publications')">Publications</a></li></ul></div>
-      <div class="footer-col"><h4>Connect</h4><ul class="footer-links"><li><a onclick="showPage('about')">About GLB</a></li><li><a onclick="showPage('founders')">Founders</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Connect</h4><ul class="footer-links"><li><a onclick="showPage('about')">About GLB</a></li><li><a onclick="showPage('people')">People</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul></div>
     </div>
     <div class="footer-bottom">
       <p>© 2025 Get Learn Bioinformatics. All rights reserved.</p>
@@ -734,113 +759,138 @@
   </div>
 </div>
 
-<!-- ═══════════ FOUNDER ═══════════ -->
-<div class="page" id="page-founders">
+<!-- ═══════════ PEOPLE ═══════════ -->
+<div class="page" id="page-people">
   <div class="page-header">
     <div class="container">
-      <div class="eyebrow">Leadership</div>
-      <h1>Meet the <span class="teal">Founding Team</span></h1>
-      <p style="max-width:520px;margin-top:10px">Get Learn Bioinformatics was founded by four undergraduate researchers united by a shared goal — making bioinformatics and computational biology accessible to the next generation.</p>
+      <div class="eyebrow">Our Team</div>
+      <h1>Meet the <span class="teal">GLB Team</span></h1>
+      <p style="max-width:520px;margin-top:10px">Get Learn Bioinformatics was founded by four undergraduate researchers united by a shared goal — making bioinformatics and computational biology accessible to the next generation. Our team also includes Research Associates (RA) and Contributing Associates (CA) who help drive GLB's research and training forward.</p>
     </div>
   </div>
 
   <div class="section">
     <div class="container">
 
-      <div class="founder-card">
-        <div class="founder-avatar">🧬</div>
-        <div>
-          <div class="founder-name">Md Al Amin</div>
-          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
-          <p>Undergraduate student of Biochemistry and Molecular Biology at <a href="https://jnu.ac.bd/department/portal/biochemistry" target="_blank">Jagannath University</a>, Bangladesh, with strong training in both experimental and computational biomedical research. He works as a Research Assistant at the Red-Green Research Centre, focusing on peptide-based drug design using computational biology, and contributes to departmental research on Bangladeshi phytochemicals as eco-friendly larvicidal alternatives, aligned with the One Health framework. He has served as President of ISCB RSG Bangladesh and is active in academic outreach and teaching, aiming to bridge computational and experimental approaches in drug discovery and molecular biology.</p>
-          <div class="founder-social">
-            <a href="mailto:alamin.jnu.bmb@gmail.com">✉ Email</a>
-            <a href="https://linkedin.com/in/alaamin/" target="_blank">💼 LinkedIn</a>
-            <a href="https://github.com/alamin7009" target="_blank">🐙 GitHub</a>
-            <a href="https://orcid.org/0009-0002-4236-9212" target="_blank">🆔 ORCID</a>
-            <a href="https://scholar.google.com/citations?user=qNbuVDYAAAAJ&hl=en" target="_blank">🎓 Scholar</a>
+      <div class="people-tabs">
+        <button class="people-tab active" data-tab="founders" onclick="showPeopleTab('founders')">Founders <span class="people-tab-count">4</span></button>
+        <button class="people-tab" data-tab="ra" onclick="showPeopleTab('ra')">RA</button>
+        <button class="people-tab" data-tab="ca" onclick="showPeopleTab('ca')">CA</button>
+      </div>
+
+      <!-- FOUNDERS PANEL -->
+      <div class="people-panel active" id="people-panel-founders">
+
+        <div class="founder-card">
+          <div class="founder-avatar">🧬</div>
+          <div>
+            <div class="founder-name">Md Al Amin</div>
+            <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+            <p>Undergraduate student of Biochemistry and Molecular Biology at <a href="https://jnu.ac.bd/department/portal/biochemistry" target="_blank">Jagannath University</a>, Bangladesh, with strong training in both experimental and computational biomedical research. He works as a Research Assistant at the Red-Green Research Centre, focusing on peptide-based drug design using computational biology, and contributes to departmental research on Bangladeshi phytochemicals as eco-friendly larvicidal alternatives, aligned with the One Health framework. He has served as President of ISCB RSG Bangladesh and is active in academic outreach and teaching, aiming to bridge computational and experimental approaches in drug discovery and molecular biology.</p>
+            <div class="founder-social">
+              <a href="mailto:alamin.jnu.bmb@gmail.com">✉ Email</a>
+              <a href="https://linkedin.com/in/alaamin/" target="_blank">💼 LinkedIn</a>
+              <a href="https://github.com/alamin7009" target="_blank">🐙 GitHub</a>
+              <a href="https://orcid.org/0009-0002-4236-9212" target="_blank">🆔 ORCID</a>
+              <a href="https://scholar.google.com/citations?user=qNbuVDYAAAAJ&hl=en" target="_blank">🎓 Scholar</a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="founder-card">
-        <div class="founder-avatar">🧬</div>
-        <div>
-          <div class="founder-name">Rahnuma Tabassum</div>
-          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
-          <p>Undergraduate student of Biochemistry and Molecular Biology at <a href="https://jnu.ac.bd/department/portal/biochemistry" target="_blank">Jagannath University</a>, Bangladesh, with strong training in both experimental and computational biomedical research. She completed the GSA Bioinformatics Internship 2025 (organized by GNOBB, SPSB, and ASI School of Life, in collaboration with Chiral Bangladesh and DeepBio Limited), and her research on integrated transcriptomic meta-analysis of liver hepatocellular carcinoma reflects her commitment to data-driven cancer research. She also studies bioactive compounds from Bangladeshi medicinal plants as eco-friendly larvicidal agents, aligned with the One Health framework. She has served as President of ISCB RSG Bangladesh and is active in mentoring and academic outreach.</p>
-          <div class="founder-social">
-            <a href="mailto:tabassumnehleen@gmail.com">✉ Email</a>
-            <a href="https://www.linkedin.com/in/rahnuma-tabassum-a51791218/" target="_blank">💼 LinkedIn</a>
-            <a href="https://github.com/BMBjnu27" target="_blank">🐙 GitHub</a>
-            <a href="https://orcid.org/0009-0002-4894-1785" target="_blank">🆔 ORCID</a>
-            <a href="https://scholar.google.com/citations?user=_4O3yosAAAAJ&hl=en" target="_blank">🎓 Scholar</a>
+        <div class="founder-card">
+          <div class="founder-avatar">🧬</div>
+          <div>
+            <div class="founder-name">Rahnuma Tabassum</div>
+            <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+            <p>Undergraduate student of Biochemistry and Molecular Biology at <a href="https://jnu.ac.bd/department/portal/biochemistry" target="_blank">Jagannath University</a>, Bangladesh, with strong training in both experimental and computational biomedical research. She completed the GSA Bioinformatics Internship 2025 (organized by GNOBB, SPSB, and ASI School of Life, in collaboration with Chiral Bangladesh and DeepBio Limited), and her research on integrated transcriptomic meta-analysis of liver hepatocellular carcinoma reflects her commitment to data-driven cancer research. She also studies bioactive compounds from Bangladeshi medicinal plants as eco-friendly larvicidal agents, aligned with the One Health framework. She has served as President of ISCB RSG Bangladesh and is active in mentoring and academic outreach.</p>
+            <div class="founder-social">
+              <a href="mailto:tabassumnehleen@gmail.com">✉ Email</a>
+              <a href="https://www.linkedin.com/in/rahnuma-tabassum-a51791218/" target="_blank">💼 LinkedIn</a>
+              <a href="https://github.com/BMBjnu27" target="_blank">🐙 GitHub</a>
+              <a href="https://orcid.org/0009-0002-4894-1785" target="_blank">🆔 ORCID</a>
+              <a href="https://scholar.google.com/citations?user=_4O3yosAAAAJ&hl=en" target="_blank">🎓 Scholar</a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="founder-card">
-        <div class="founder-avatar">🧬</div>
-        <div>
-          <div class="founder-name">Chinmoy Nandi</div>
-          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
-          <p>Co-Founder of Get Learn Bioinformatics, dedicated to building an accessible platform for the next generation of bioinformatics researchers and students. Chinmoy helped establish GLB with the vision of creating a community where students and researchers can grow, innovate, and succeed in bioinformatics and computational biology, and leads GLB's webinar and outreach programs — including the AlphaFold webinar featured below.</p>
-       <div class="founder-social">
-            <a href="mailto:anto.connect117@gmail.com">✉ Email</a>
-            <a href="https://www.linkedin.com/in/chinmoynandi/">💼 LinkedIn</a>
-           <a href="https://orcid.org/0009-0002-2718-6442">🆔 ORCID</a>
+        <div class="founder-card">
+          <div class="founder-avatar">🧬</div>
+          <div>
+            <div class="founder-name">Chinmoy Nandi</div>
+            <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+            <p>Co-Founder of Get Learn Bioinformatics, dedicated to building an accessible platform for the next generation of bioinformatics researchers and students. Chinmoy helped establish GLB with the vision of creating a community where students and researchers can grow, innovate, and succeed in bioinformatics and computational biology, and leads GLB's webinar and outreach programs — including the AlphaFold webinar featured below.</p>
+            <div class="founder-social">
+              <a href="mailto:anto.connect117@gmail.com">✉ Email</a>
+              <a href="https://www.linkedin.com/in/chinmoynandi/">💼 LinkedIn</a>
+              <a href="https://orcid.org/0009-0002-2718-6442">🆔 ORCID</a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="founder-card">
-        <div class="founder-avatar">🧬</div>
-        <div>
-          <div class="founder-name">Mir Mohammod Ehsanul Haque</div>
-          <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
-          <p>Co-Founder of Get Learn Bioinformatics, supporting the platform's mission to make computational biology accessible to students and early-career researchers. He contributes to GLB's training and webinar initiatives — including the AlphaFold webinar featured below, introducing AI-driven protein structure prediction to the GLB community.</p>
-        <div class="founder-social">
-            <a href="mailto:ehsanulrebat97@gmail.com">✉ Email</a>
-            <a href="https://www.linkedin.com/in/mir-ehsan/">💼 LinkedIn</a>
-            <a href="https://orcid.org/0009-0002-8753-9107">🆔 ORCID</a>
+        <div class="founder-card">
+          <div class="founder-avatar">🧬</div>
+          <div>
+            <div class="founder-name">Mir Mohammod Ehsanul Haque</div>
+            <div class="founder-role">Co-Founder — Get Learn Bioinformatics</div>
+            <p>Co-Founder of Get Learn Bioinformatics, supporting the platform's mission to make computational biology accessible to students and early-career researchers. He contributes to GLB's training and webinar initiatives — including the AlphaFold webinar featured below, introducing AI-driven protein structure prediction to the GLB community.</p>
+            <div class="founder-social">
+              <a href="mailto:ehsanulrebat97@gmail.com">✉ Email</a>
+              <a href="https://www.linkedin.com/in/mir-ehsan/">💼 LinkedIn</a>
+              <a href="https://orcid.org/0009-0002-8753-9107">🆔 ORCID</a>
+            </div>
           </div>
         </div>
-      </div>
 
-    </div>
-  </div>
-</div>
+        <hr class="divider"/>
 
-      <hr class="divider"/>
+        <div class="eyebrow">Featured Webinar</div>
+        <h2 style="margin-bottom:8px">Explore <span class="teal">AlphaFold</span></h2>
+        <p style="margin-bottom:6px;max-width:600px">AlphaFold is a breakthrough AI tool developed by DeepMind that predicts the 3D structures of proteins from their amino acid sequences — transforming structural biology, drug design, protein engineering, and functional annotation.</p>
+        <p style="margin-bottom:28px;max-width:600px;font-size:12.5px;color:var(--text-dim)">Webinar hosted by Chinmoy Nandi &amp; Mir Mohammod Ehsanul Haque.</p>
 
-      <div class="eyebrow">Featured Webinar</div>
-      <h2 style="margin-bottom:8px">Explore <span class="teal">AlphaFold</span></h2>
-      <p style="margin-bottom:6px;max-width:600px">AlphaFold is a breakthrough AI tool developed by DeepMind that predicts the 3D structures of proteins from their amino acid sequences — transforming structural biology, drug design, protein engineering, and functional annotation.</p>
-      <p style="margin-bottom:28px;max-width:600px;font-size:12.5px;color:var(--text-dim)">Webinar hosted by Chinmoy Nandi &amp; Mir Mohammod Ehsanul Haque.</p>
+        <div class="alphafold-card">
+          <div class="eyebrow" style="margin-bottom:16px">Key Takeaways from the Webinar</div>
+          <div class="grid-2" style="margin-bottom:28px">
+            <div class="card"><p style="font-size:13.5px">✅ AlphaFold predicts protein structures with high accuracy from amino acid sequences alone.</p></div>
+            <div class="card"><p style="font-size:13.5px">✅ Directly applicable to drug discovery, molecular biology, and bioinformatics workflows.</p></div>
+            <div class="card"><p style="font-size:13.5px">✅ Free tools — AlphaFold DB and ColabFold — allow anyone to explore structure predictions.</p></div>
+            <div class="card"><p style="font-size:13.5px">✅ Understanding AlphaFold is key to the future of computational and structural biology.</p></div>
+          </div>
 
-      <div class="alphafold-card">
-        <div class="eyebrow" style="margin-bottom:16px">Key Takeaways from the Webinar</div>
-        <div class="grid-2" style="margin-bottom:28px">
-          <div class="card"><p style="font-size:13.5px">✅ AlphaFold predicts protein structures with high accuracy from amino acid sequences alone.</p></div>
-          <div class="card"><p style="font-size:13.5px">✅ Directly applicable to drug discovery, molecular biology, and bioinformatics workflows.</p></div>
-          <div class="card"><p style="font-size:13.5px">✅ Free tools — AlphaFold DB and ColabFold — allow anyone to explore structure predictions.</p></div>
-          <div class="card"><p style="font-size:13.5px">✅ Understanding AlphaFold is key to the future of computational and structural biology.</p></div>
+          <div class="eyebrow" style="margin-bottom:16px">Explore AlphaFold Yourself</div>
+          <a class="alphafold-link" href="https://alphafold.ebi.ac.uk" target="_blank">
+            <div class="alphafold-link-icon">🏗️</div>
+            <div><div class="alphafold-link-title">AlphaFold Protein Structure Database (EMBL-EBI)</div><div class="alphafold-link-sub">Search and download predicted protein structures</div></div>
+          </a>
+          <a class="alphafold-link" href="https://colab.research.google.com/github/sokrypton/ColabFold" target="_blank">
+            <div class="alphafold-link-icon">⚡</div>
+            <div><div class="alphafold-link-title">ColabFold — Google Colab Notebook</div><div class="alphafold-link-sub">Try protein structure predictions interactively, for free</div></div>
+          </a>
+          <a class="alphafold-link" href="https://www.youtube.com/watch?v=gg7WjuFs8F4&list=PLqYmG7hTraZAhkAh72kzzLC4r2O4VoVgz" target="_blank">
+            <div class="alphafold-link-icon">▶</div>
+            <div><div class="alphafold-link-title">YouTube: AlphaFold — The Making of a Scientific Breakthrough</div><div class="alphafold-link-sub">Video overview by DeepMind</div></div>
+          </a>
         </div>
-
-        <div class="eyebrow" style="margin-bottom:16px">Explore AlphaFold Yourself</div>
-        <a class="alphafold-link" href="https://alphafold.ebi.ac.uk" target="_blank">
-          <div class="alphafold-link-icon">🏗️</div>
-          <div><div class="alphafold-link-title">AlphaFold Protein Structure Database (EMBL-EBI)</div><div class="alphafold-link-sub">Search and download predicted protein structures</div></div>
-        </a>
-        <a class="alphafold-link" href="https://colab.research.google.com/github/sokrypton/ColabFold" target="_blank">
-          <div class="alphafold-link-icon">⚡</div>
-          <div><div class="alphafold-link-title">ColabFold — Google Colab Notebook</div><div class="alphafold-link-sub">Try protein structure predictions interactively, for free</div></div>
-        </a>
-        <a class="alphafold-link" href="https://www.youtube.com/watch?v=gg7WjuFs8F4&list=PLqYmG7hTraZAhkAh72kzzLC4r2O4VoVgz" target="_blank">
-          <div class="alphafold-link-icon">▶</div>
-          <div><div class="alphafold-link-title">YouTube: AlphaFold — The Making of a Scientific Breakthrough</div><div class="alphafold-link-sub">Video overview by DeepMind</div></div>
-        </a>
       </div>
+
+      <!-- RA PANEL -->
+      <div class="people-panel" id="people-panel-ra">
+        <div class="people-empty">
+          <div style="font-size:30px;margin-bottom:12px">🔬</div>
+          <h3 style="margin-bottom:8px">Research Associates — Coming Soon</h3>
+          <p>Profiles for GLB's Research Associates are being prepared and will appear here shortly.</p>
+        </div>
+      </div>
+
+      <!-- CA PANEL -->
+      <div class="people-panel" id="people-panel-ca">
+        <div class="people-empty">
+          <div style="font-size:30px;margin-bottom:12px">🤝</div>
+          <h3 style="margin-bottom:8px">Contributing Associates — Coming Soon</h3>
+          <p>Profiles for GLB's Contributing Associates are being prepared and will appear here shortly.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -940,7 +990,7 @@
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <span class="tag">AlphaFold</span><span class="tag">Structural Biology</span><span class="tag">Drug Discovery</span>
           </div>
-          <div style="margin-top:16px"><a class="btn btn-outline" onclick="showPage('founders')" style="font-size:12.5px;padding:8px 16px">View Resources →</a></div>
+          <div style="margin-top:16px"><a class="btn btn-outline" onclick="showPage('people')" style="font-size:12.5px;padding:8px 16px">View Resources →</a></div>
         </div>
         <div class="card">
           <div class="eyebrow" style="margin-bottom:12px">What Was Covered</div>
@@ -1195,6 +1245,14 @@
       });
     }
   }
+
+  // People page tab switching (Founders / RA / CA)
+  function showPeopleTab(tab) {
+    showPage('people');
+    document.querySelectorAll('.people-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    document.querySelectorAll('.people-panel').forEach(p => p.classList.toggle('active', p.id === 'people-panel-' + tab));
+  }
+
   // DNA Sequence Ticker
   const bases = ['A','T','G','C'];
   const track = document.getElementById('seqTrack');
